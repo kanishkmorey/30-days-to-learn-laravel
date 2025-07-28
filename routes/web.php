@@ -1,20 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\Job;
+use App\Models\JobListing;
 
 Route::get('/', function () {
     return view('home');
 });
 
 Route::get('/jobs', function () {
+
+    $jobs = JobListing::with('employer')->simplePaginate(3);
     return view('jobs', [
-        'jobs' => Job::all()
+        'jobs' => $jobs
     ]);
 });
 
 Route::get('/jobs/{id}', function ($id) {
-    $job = Job::find($id);
+    $job = JobListing::find($id);
     return view('job', ['job' => $job]);
 });
 
